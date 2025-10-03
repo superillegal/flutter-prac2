@@ -10,38 +10,97 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool notifications = true;
   bool darkPreview = false;
+  double playerVolume = 0.6;
+  String syncMode = 'Автоматически';
 
   @override
   Widget build(BuildContext context) {
-    final previewColor = darkPreview
-        ? Theme.of(context).colorScheme.inverseSurface
-        : Theme.of(context).colorScheme.primaryContainer;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Настройки', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+          Text(
+            'Настройки',
+            style: theme.textTheme.titleMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 12),
           SwitchListTile(
-            title: const Text('Уведомления'),
+            title: const Text('Уведомления о новых заданиях'),
+            subtitle:
+                const Text('Получайте напоминания о дедлайнах и обновлениях.'),
             value: notifications,
             onChanged: (v) => setState(() => notifications = v),
           ),
           SwitchListTile(
             title: const Text('Предпросмотр тёмной темы'),
+            subtitle: const Text(
+                'Используется в галерее и разделе профиля для ночного режима.'),
             value: darkPreview,
             onChanged: (v) => setState(() => darkPreview = v),
           ),
           const SizedBox(height: 12),
-          Container(
-            height: 120,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: previewColor,
-              borderRadius: BorderRadius.circular(12),
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Громкость медиаплеера'),
+                  Slider(
+                    value: playerVolume,
+                    onChanged: (value) => setState(() => playerVolume = value),
+                  ),
+                  Text('%'),
+                ],
+              ),
             ),
-            child: const Text('Зона предпросмотра темы'),
+          ),
+          const SizedBox(height: 12),
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  const Expanded(child: Text('Синхронизация данных')),
+                  DropdownButton<String>(
+                    value: syncMode,
+                    items: const [
+                      DropdownMenuItem(
+                          value: 'Автоматически', child: Text('Автоматически')),
+                      DropdownMenuItem(
+                          value: 'Ручной контроль',
+                          child: Text('Ручной контроль')),
+                      DropdownMenuItem(
+                          value: 'Выключено', child: Text('Выключено')),
+                    ],
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setState(() => syncMode = value);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: theme.colorScheme.surfaceVariant,
+            ),
+            child: Text(
+              'Текущие настройки учитываются в профиле и галерее: уведомления напоминают об обновлении '
+              'фотографий, а выбранный режим синхронизации влияет на состав справки в разделе "О проекте".',
+            ),
           ),
         ],
       ),

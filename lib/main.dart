@@ -12,7 +12,7 @@ class RKMP3App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'RKMP3 Demo',
+      title: 'RKMP3',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,

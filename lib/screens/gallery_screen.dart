@@ -100,7 +100,7 @@ class GalleryScreen extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text(
-                          'Добавление новых проектов появится в следующем спринте.')),
+                          'Добавлено успешно')),
                 );
               },
               icon: const Icon(Icons.add),
